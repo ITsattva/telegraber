@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_16">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: it.tdlight:tdlight-java:2.8.3.0" level="project" />
+    <orderEntry type="library" name="Maven: it.tdlight:tdlight-api-sealed:4.0.255" level="project" />
+    <orderEntry type="library" name="Maven: it.unimi.dsi:fastutil:8.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" />
+    <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: net.harawata:appdirs:1.2.1" level="project" />
+    <orderEntry type="library" name="Maven: net.java.dev.jna:jna-platform:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: net.java.dev.jna:jna:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.zxing:core:3.4.1" level="project" />
+    <orderEntry type="library" name="Maven: it.tdlight:tdlight-natives-linux-amd64:4.0.257" level="project" />
+    <orderEntry type="library" name="Maven: it.tdlight:tdlight-natives-windows-amd64:4.0.257" level="project" />
+    <orderEntry type="library" name="Maven: it.tdlight:tdlight-natives-osx-amd64:4.0.257" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.17.2" level="project" />
+    <orderEntry type="library" name="Maven: com.lmax:disruptor:3.4.4" level="project" />
+    <orderEntry type="library" name="Maven: tlight:tlight.spin:0.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:clojure:1.10.1" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:spec.alpha:0.2.176" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:core.specs.alpha:0.2.44" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:core.async:1.2.603" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:tools.analyzer.jvm:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:tools.analyzer:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:core.memoize:0.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:core.cache:0.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:data.priority-map:0.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.clojure:tools.reader:1.3.2" level="project" />
+  </component>
+</module>

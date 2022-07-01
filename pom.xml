@@ -109,8 +109,6 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>classes/</classpathPrefix>
 							<mainClass>it.tdlight.client.Client</mainClass>
 						</manifest>
 					</archive>

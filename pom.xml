@@ -102,20 +102,19 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
 			</plugin>
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>it.tdlight.client.Client</mainClass>
-							<addClasspath>true</addClasspath>
-<!--							<classpathPrefix>classes/</classpathPrefix>-->
-						</manifest>
-					</archive>
-
-				</configuration>
-			</plugin>
+<!--			<plugin>-->
+<!--				<artifactId>maven-jar-plugin</artifactId>-->
+<!--				<version>3.2.0</version>-->
+<!--				<configuration>-->
+<!--					<archive>-->
+<!--						<manifest>-->
+<!--							<mainClass>it.tdlight.client.Client</mainClass>-->
+<!--							<addClasspath>true</addClasspath>-->
+<!--&lt;!&ndash;							<classpathPrefix>classes/</classpathPrefix>&ndash;&gt;-->
+<!--						</manifest>-->
+<!--					</archive>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 			<plugin>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>3.0.0-M1</version>

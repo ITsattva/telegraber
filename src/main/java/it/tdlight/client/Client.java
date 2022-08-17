@@ -26,16 +26,25 @@ public final class Client {
 	public static SimpleTelegramClient getClient(){
 		return client;
 	}
-	private static final Map<String, Long> channelsFrom = new HashMap<>();
+	private static final Map<String, Long> channelsFromWar = new HashMap<>();
+	private static final Map<String, Long> channelsFromProgramming = new HashMap<>();
 	private static final Map<String, Long> channelsTo = new HashMap<>();
 
 	static {
-		channelsFrom.put("AlarmMap", -1001505028797L);
-		channelsFrom.put("Instarding", -1001337186936L);
-		channelsFrom.put("Ragnarock", -1001394293754L);
-		channelsFrom.put("Kate", 890534772L);
+		channelsFromWar.put("УНИАН", -1001105313000L);
+		channelsFromWar.put("Perepichka NEWS", -1001278252976L);
+		channelsFromWar.put("NEXTA Live", -1001413275904L);
+		channelsFromWar.put("AlarmMap", -1001505028797L);
 
+		channelsFromProgramming.put("Senior SQL Developer", -1001468396285L);
+		channelsFromProgramming.put("Senior Java Developer", -1001529589156L);
+		channelsFromProgramming.put("IT CHEF: Новости, кибербезопасность", -1001172380872L);
+		channelsFromProgramming.put("Библиотека джависта | Java, Spring, Maven, Hibernate", -1001215056194L);
+
+//		channelsFrom.put("Kate", 890534772L);
 		channelsTo.put("Test", -1001611624929L);
+		channelsTo.put("War test", -1001549135330L);
+		channelsTo.put("Programming test", -1001761551525L);
 	}
 	public static void main(String[] args) throws CantLoadLibrary, InterruptedException {
 		// Initialize TDLight native libraries
@@ -81,9 +90,16 @@ public final class Client {
 		long fromChatId = update.message.chatId;
 		sender.tuneUpStrategy(messageContent);
 
-		if(channelsFrom.containsValue(fromChatId)) {
+		if(channelsFromWar.containsValue(fromChatId)) {
 			try {
-				sender.send(channelsTo.get("Test"), update);
+				sender.send(channelsTo.get("War test"), update);
+			} catch (IOException e) {
+				System.out.println("IOException occurred");
+			}
+		}
+		if(channelsFromProgramming.containsValue(fromChatId)) {
+			try {
+				sender.send(channelsTo.get("Programming test"), update);
 			} catch (IOException e) {
 				System.out.println("IOException occurred");
 			}

@@ -33,18 +33,18 @@ public final class Client {
 		channelsFrom.put("AlarmMap", -1001505028797L);
 		channelsFrom.put("Instarding", -1001337186936L);
 		channelsFrom.put("Ragnarock", -1001394293754L);
+		channelsFrom.put("Kate", 890534772L);
 
-		channelsTo.put("Test", -1001361674921L);
+		channelsTo.put("Test", -1001611624929L);
 	}
 	public static void main(String[] args) throws CantLoadLibrary, InterruptedException {
 		// Initialize TDLight native libraries
 		Init.start();
 		// Obtain the API token
-		var apiToken = APIToken.example();
+		var apiToken = new APIToken(19661841,"54511397e605d7787ca1537ebc5212bb");
 
 		// Configure the client
 		var settings = TDLibSettings.create(apiToken);
-
 		// Configure the session directory
 		var sessionPath = Paths.get("example-tdlight-session");
 		settings.setDatabaseDirectoryPath(sessionPath.resolve("data"));

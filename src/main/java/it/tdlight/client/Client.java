@@ -47,6 +47,7 @@ public final class Client {
 		channelsTo.put("Programming test", -1001761551525L);
 	}
 	public static void main(String[] args) throws CantLoadLibrary, InterruptedException {
+
 		// Initialize TDLight native libraries
 		Init.start();
 		// Obtain the API token

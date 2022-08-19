@@ -7,6 +7,7 @@ import it.tdlight.jni.TdApi.MessagePhoto;
 import it.tdlight.jni.TdApi.MessageText;
 import it.tdlight.jni.TdApi.MessageVideo;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Sender {
 	private Strategy strategy;
@@ -28,7 +29,14 @@ public class Sender {
 	}
 
 	public void send(long chatId, TdApi.UpdateNewMessage update) throws IOException {
+		tuneUpStrategy(update.message.content);
 		strategy.send(chatId, update);
 	}
 
+	public void sendBatch(long chatId, ArrayList<TdApi.UpdateNewMessage> bufferList) throws IOException {
+		if (bufferList.size() > 0) {
+			tuneUpStrategy(bufferList.get(0).message.content);
+		}
+		strategy.sendBatch(chatId, bufferList);
+	}
 }

@@ -144,6 +144,11 @@ public final class Client {
                 }
             } catch (Exception e) {
                 System.out.println("IOException in Programming channels occurred");
+                try {
+                    sender.sendExceptionToAuthor(e, "Programming channels");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
 
@@ -166,6 +171,11 @@ public final class Client {
                 }
             } catch (Exception e) {
                 System.out.println("IOException in WAR channels occurred");
+                try {
+                    sender.sendExceptionToAuthor(e, "war channels");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
 

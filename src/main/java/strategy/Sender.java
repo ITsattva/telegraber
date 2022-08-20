@@ -1,5 +1,7 @@
 package strategy;
 
+import handler.ResultHandler;
+import it.tdlight.client.Client;
 import it.tdlight.client.SimpleTelegramClient;
 import it.tdlight.jni.TdApi;
 import it.tdlight.jni.TdApi.MessageAudio;
@@ -38,5 +40,12 @@ public class Sender {
 			tuneUpStrategy(bufferList.get(0).message.content);
 		}
 		strategy.sendBatch(chatId, bufferList);
+	}
+
+	public void sendExceptionToAuthor(Exception exception, String from) throws IOException {
+		long debugChatId = -1001611624929L;
+
+		TdApi.FormattedText text = new TdApi.FormattedText(from + "\n" + exception.getMessage(), null);
+		Client.getClient().send(new TdApi.SendMessage(debugChatId, 0, 0, null, null, new TdApi.InputMessageText(text, true, true)), new ResultHandler());
 	}
 }

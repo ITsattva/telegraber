@@ -4,11 +4,15 @@ import it.tdlight.common.Init;
 import it.tdlight.common.utils.CantLoadLibrary;
 import it.tdlight.jni.TdApi;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import strategy.Sender;
 
@@ -33,14 +37,30 @@ public final class Client {
 
     private static final Map<String, Long> channelsFromWar = new HashMap<>();
     private static final Map<String, Long> channelsFromProgramming = new HashMap<>();
+    private static final Map<String, Long> channelsTo = new HashMap<>();
+    private static final Properties properties = new Properties();
+
+    private static Long lastMessageAlbumIdWar;
+    private static final ArrayList<TdApi.UpdateNewMessage> bufferListWar = new ArrayList<>();
+
+    private static Long lastMessageAlbumIdProgramming;
+    private static final ArrayList<TdApi.UpdateNewMessage> bufferListProgramming = new ArrayList<>();
+
+    //test area
     private static final Map<String, Long> testChannelForDebuggingFROM = new HashMap<>();
     private static final Map<String, Long> testChannelForDebuggingTO = new HashMap<>();
-    private static final Map<String, Long> channelsTo = new HashMap<>();
-    private static Long lastMessageAlbumId;
-    private static final ArrayList<TdApi.UpdateNewMessage> bufferList = new ArrayList<>();
 
+    private static Long lastMessageAlbumId;
+    private static final ArrayList<TdApi.UpdateNewMessage> bufferListTEST = new ArrayList<>();
+    //test area
 
     static {
+        try {
+            properties.load(new FileReader("telegram.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         channelsFromWar.put("УНИАН", -1001105313000L);
         channelsFromWar.put("Perepichka NEWS", -1001278252976L);
         channelsFromWar.put("NEXTA Live", -1001413275904L);
@@ -64,7 +84,7 @@ public final class Client {
         Init.start();
 
         // Obtain the API token
-        var apiToken = new APIToken(19661841, "54511397e605d7787ca1537ebc5212bb");
+        var apiToken = new APIToken(Integer.parseInt(properties.getProperty("apiID")), properties.getProperty("apiHash"));
 
         // Configure the client
         var settings = TDLibSettings.create(apiToken);
@@ -105,45 +125,76 @@ public final class Client {
         long fromChatId = update.message.chatId;
 
         //Main Logic
-//		if(channelsFromWar.containsValue(fromChatId)) {
-//			try {
-//				sender.send(channelsTo.get("War test"), update);
-//			} catch (IOException e) {
-//				System.out.println("IOException occurred");
-//			}
-//		}
-//		if(channelsFromProgramming.containsValue(fromChatId)) {
-//			try {
-//				sender.send(channelsTo.get("Programming test"), update);
-//			} catch (IOException e) {
-//				System.out.println("IOException occurred");
-//			}
-//		}
+        if (channelsFromProgramming.containsValue(fromChatId)) {
+            try {
+                if (update.message.mediaAlbumId == 0) {
+                    if(bufferListProgramming.size() > 0) {
+                        sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
+                    }
+                    bufferListProgramming.clear();
+                    sender.send(channelsTo.get("Programming test"), update);
+                } else if (bufferListProgramming.isEmpty() || lastMessageAlbumIdProgramming == update.message.mediaAlbumId) {
+                    bufferListProgramming.add(update);
+                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
+                } else {
+                    sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
+                    bufferListProgramming.clear();
+                    bufferListProgramming.add(update);
+                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
+                }
+            } catch (Exception e) {
+                System.out.println("IOException in Programming channels occurred");
+            }
+        }
+
+        if(channelsFromWar.containsValue(fromChatId)) {
+            try {
+                if (update.message.mediaAlbumId == 0) {
+                    if(bufferListWar.size() > 0) {
+                        sender.sendBatch(channelsTo.get("War test"), bufferListWar);
+                    }
+                    bufferListWar.clear();
+                    sender.send(channelsTo.get("War test"), update);
+                } else if (bufferListWar.isEmpty() || lastMessageAlbumIdWar == update.message.mediaAlbumId) {
+                    bufferListWar.add(update);
+                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
+                } else {
+                    sender.sendBatch(channelsTo.get("War test"), bufferListWar);
+                    bufferListWar.clear();
+                    bufferListWar.add(update);
+                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
+                }
+            } catch (Exception e) {
+                System.out.println("IOException in WAR channels occurred");
+            }
+        }
 
         /////////DEBUG AREA////////////////
         /////////Testing batch sending/////
-        if (testChannelForDebuggingFROM.containsValue(fromChatId)) {
-            try {
-                //Если пришло не пачкой, то отправляем всё
-                if (update.message.mediaAlbumId == 0) {
-                    sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferList);
-                    bufferList.clear();
-                    sender.send(testChannelForDebuggingTO.get("Test"), update);
-                //Если пришло пачкой, то накапливаем до тех пор, пока одинаковый альбом_айди
-                } else if (bufferList.isEmpty() || lastMessageAlbumId == update.message.mediaAlbumId) {
-                    bufferList.add(update);
-                    lastMessageAlbumId = update.message.mediaAlbumId;
-                //Айди разный - отправляем
-                } else {
-                    sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferList);
-                    bufferList.clear();
-                    bufferList.add(update);
-                    lastMessageAlbumId = update.message.mediaAlbumId;
-                }
-            } catch (Exception e) {
-                System.out.println("IOException occurred");
-            }
-        }
+//        if (testChannelForDebuggingFROM.containsValue(fromChatId)) {
+//            try {
+//                System.out.println("There is a message, with albumId: " + update.message.mediaAlbumId);
+//                if (update.message.mediaAlbumId == 0) {
+//                    if(bufferListTEST.size() > 0) {
+//                        sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
+//                    }
+//                    bufferListTEST.clear();
+//                    sender.send(testChannelForDebuggingTO.get("Test"), update);
+//                    //Если пришло пачкой, то накапливаем до тех пор, пока одинаковый альбом_айди
+//                } else if (bufferListTEST.isEmpty() || lastMessageAlbumId == update.message.mediaAlbumId) {
+//                    bufferListTEST.add(update);
+//                    lastMessageAlbumId = update.message.mediaAlbumId;
+//                    //Айди разный - отправляем
+//                } else {
+//                    sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
+//                    bufferListTEST.clear();
+//                    bufferListTEST.add(update);
+//                    lastMessageAlbumId = update.message.mediaAlbumId;
+//                }
+//            } catch (Exception e) {
+//                System.out.println("IOException in test channel occurred");
+//            }
+//        }
         /////////DEBUG AREA////////////////
 
 

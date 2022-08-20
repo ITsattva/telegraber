@@ -25,6 +25,7 @@ public class StrategyPhoto implements Strategy{
 			height = photo.height;
 		}
 
+
 		client.send(new TdApi.SendMessage(chatId, 0, 0, null, null, new TdApi.InputMessagePhoto(new TdApi.InputFileId(photoId), null, null, width, height, text, 0)), new ResultHandler());
 	}
 

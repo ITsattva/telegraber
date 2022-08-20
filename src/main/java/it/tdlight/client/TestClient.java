@@ -18,6 +18,7 @@ public class TestClient {
 		// Create a client
 		TelegramClient client = ClientManager.create();
 
+
 		// Initialize the client
 		client.initialize(TestClient::onUpdate, TestClient::onUpdateError, TestClient::onError);
 

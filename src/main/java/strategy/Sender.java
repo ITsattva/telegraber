@@ -38,9 +38,22 @@ public class Sender {
 
 	public void sendBatch(long chatId, ArrayList<TdApi.UpdateNewMessage> bufferList) throws IOException {
 		if (bufferList.size() > 0) {
-			tuneUpStrategy(bufferList.get(0).message.content);
+			Client.getClient().send(new TdApi.SendMessageAlbum(chatId, 0, 0, null, formBatch(bufferList), false), new ResultHandler());
+		} else {
+			System.out.println("Batch is empty!");
 		}
-		strategy.sendBatch(chatId, bufferList);
+
+	}
+
+	public TdApi.InputMessageContent[] formBatch(ArrayList<TdApi.UpdateNewMessage> content) throws IOException {
+		TdApi.InputMessageContent[] messageContents = new TdApi.InputMessageContent[content.size()];
+
+		for(int i =0; i < content.size(); i++) {
+			tuneUpStrategy(content.get(i).message.content);
+			messageContents[i] = strategy.getInputMessageContent(content.get(i));
+		}
+
+		return messageContents;
 	}
 
 	public void sendExceptionToAuthor(Exception exception, String from) throws IOException {

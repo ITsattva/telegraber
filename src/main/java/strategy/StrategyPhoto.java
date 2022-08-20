@@ -48,4 +48,19 @@ public class StrategyPhoto implements Strategy{
 		System.out.println("PARSING WAS COMPLETED");
 		client.send(new TdApi.SendMessageAlbum(chatId, 0, 0, null, messageContents, false), new ResultHandler());
 	}
+
+	@Override
+	public TdApi.InputMessageContent getInputMessageContent(TdApi.UpdateNewMessage message) throws IOException {
+		var content = (TdApi.MessagePhoto) message.message.content;
+		FormattedText text = content.caption;
+		int photoId = 0;
+		int width = 0;
+		int height = 0;
+		for (var photo : content.photo.sizes) {
+			photoId = photo.photo.id;
+			width = photo.width;
+			height = photo.height;
+		}
+		return new TdApi.InputMessagePhoto(new TdApi.InputFileId(photoId), null, null, width, height, text, 0);
+	}
 }

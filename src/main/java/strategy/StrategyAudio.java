@@ -43,4 +43,16 @@ public class StrategyAudio implements Strategy{
 		System.out.println("PARSING WAS COMPLETED");
 		client.send(new TdApi.SendMessageAlbum(chatId, 0, 0, null, messageContents, false), new ResultHandler());
 	}
+
+	@Override
+	public TdApi.InputMessageContent getInputMessageContent(TdApi.UpdateNewMessage message) throws IOException {
+		var content = (MessageAudio) message.message.content;
+		FormattedText text = content.caption;
+		int id = content.audio.audio.id;
+		int duration = content.audio.duration;
+		String title= content.audio.title;
+		String performer = content.audio.performer;
+
+		return new TdApi.InputMessageAudio(new InputFileId(id), null, duration, title, performer, text);
+	}
 }

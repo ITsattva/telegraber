@@ -10,4 +10,6 @@ public interface Strategy {
 	SimpleTelegramClient client = Client.getClient();
 	void send(long chatId, TdApi.UpdateNewMessage update) throws IOException;
 	void sendBatch(long chatId, ArrayList<TdApi.UpdateNewMessage> content) throws IOException;
+
+	TdApi.InputMessageContent getInputMessageContent(TdApi.UpdateNewMessage message) throws IOException;
 }

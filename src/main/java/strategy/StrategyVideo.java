@@ -5,6 +5,7 @@ import it.tdlight.jni.TdApi;
 import it.tdlight.jni.TdApi.FormattedText;
 import it.tdlight.jni.TdApi.UpdateNewMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class StrategyVideo implements Strategy{
@@ -36,5 +37,17 @@ public class StrategyVideo implements Strategy{
 		}
 		System.out.println("PARSING WAS COMPLETED");
 		client.send(new TdApi.SendMessageAlbum(chatId, 0, 0, null, messageContents, false), new ResultHandler());
+	}
+
+	@Override
+	public TdApi.InputMessageContent getInputMessageContent(TdApi.UpdateNewMessage message) throws IOException {
+		var content = (TdApi.MessageVideo) message.message.content;
+		FormattedText text = content.caption;
+		int videoId = content.video.video.id;
+		int width = content.video.width;
+		int height = content.video.height;
+		int duration = content.video.duration;
+
+		return new TdApi.InputMessageVideo(new TdApi.InputFileId(videoId), null, null, duration, width, height, false, text, 0);
 	}
 }

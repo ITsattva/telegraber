@@ -31,4 +31,15 @@ public class StrategyDocument implements Strategy{
 		System.out.println("PARSING WAS COMPLETED");
 		client.send(new TdApi.SendMessageAlbum(chatId, 0, 0, null, messageContents, false), new ResultHandler());
 	}
+
+	@Override
+	public TdApi.InputMessageContent getInputMessageContent(TdApi.UpdateNewMessage message) throws IOException {
+		var content = (TdApi.MessageDocument) message.message.content;
+		FormattedText text = content.caption;
+		int documentId = content.document.document.id;
+
+		return new TdApi.InputMessageDocument(new TdApi.InputFileId(documentId), null, true, text);
+	}
+
+
 }

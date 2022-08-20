@@ -125,6 +125,7 @@ public final class Client {
         long fromChatId = update.message.chatId;
 
         //Main Logic
+        //todo need to handle situation with multiply types of media
         if (channelsFromProgramming.containsValue(fromChatId)) {
             try {
                 if (update.message.mediaAlbumId == 0) {
@@ -145,7 +146,7 @@ public final class Client {
             } catch (Exception e) {
                 System.out.println("IOException in Programming channels occurred");
                 try {
-                    sender.sendExceptionToAuthor(e, "Programming channel: " + channelsFromProgramming.get(fromChatId));
+                    sender.sendExceptionToAuthor(e, "Programming channel: " + fromChatId);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -172,7 +173,7 @@ public final class Client {
             } catch (Exception e) {
                 System.out.println("IOException in WAR channels occurred");
                 try {
-                    sender.sendExceptionToAuthor(e, "war channels " + channelsFromWar.get(fromChatId));
+                    sender.sendExceptionToAuthor(e, "war channels " + fromChatId);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

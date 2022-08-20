@@ -6,6 +6,7 @@ import it.tdlight.jni.TdApi.FormattedText;
 import it.tdlight.jni.TdApi.MessageText;
 import it.tdlight.jni.TdApi.UpdateNewMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class StrategyText implements Strategy{
@@ -18,5 +19,10 @@ public class StrategyText implements Strategy{
 
 	public void sendBatch(long chatId, ArrayList<TdApi.UpdateNewMessage> bufferList) {
 		System.out.println("Void");
+	}
+
+	@Override
+	public TdApi.InputMessageContent getInputMessageContent(TdApi.UpdateNewMessage message) throws IOException {
+		return null;
 	}
 }

@@ -9,6 +9,7 @@ import it.tdlight.jni.TdApi.MessagePhoto;
 import it.tdlight.jni.TdApi.MessageText;
 import it.tdlight.jni.TdApi.MessageVideo;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Sender {
@@ -44,8 +45,10 @@ public class Sender {
 
 	public void sendExceptionToAuthor(Exception exception, String from) throws IOException {
 		long debugChatId = -1001611624929L;
+		LocalDateTime time = LocalDateTime.now();
+		String timeFormatted = time.getHour() + ":" + time.getMinute()+":" + time.getSecond()+": ";
 
-		TdApi.FormattedText text = new TdApi.FormattedText(from + "\n" + exception.getMessage(), null);
+		TdApi.FormattedText text = new TdApi.FormattedText(timeFormatted + from + "\n" + exception.getMessage(), null);
 		Client.getClient().send(new TdApi.SendMessage(debugChatId, 0, 0, null, null, new TdApi.InputMessageText(text, true, true)), new ResultHandler());
 	}
 }

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import strategy.Sender;
+import util.Helper;
 
 /**
  * Example class for TDLight Java
@@ -146,7 +147,9 @@ public final class Client {
             } catch (Exception e) {
                 System.out.println("IOException in Programming channels occurred");
                 try {
-                    sender.sendExceptionToAuthor(e, "Programming channel: " + fromChatId);
+                    sender.sendExceptionToAuthor(e, "Programming channel: " +
+                            Helper.getKeyByValue(channelsFromProgramming, fromChatId) +
+                            " id:" + fromChatId);
                     bufferListTEST.clear();
 
                 } catch (IOException ex) {
@@ -175,7 +178,9 @@ public final class Client {
             } catch (Exception e) {
                 System.out.println("IOException in WAR channels occurred");
                 try {
-                    sender.sendExceptionToAuthor(e, "war channels " + fromChatId);
+                    sender.sendExceptionToAuthor(e, "war channels "  +
+                            Helper.getKeyByValue(channelsFromWar, fromChatId) +
+                            " id:" + fromChatId);
                     bufferListTEST.clear();
 
                 } catch (IOException ex) {

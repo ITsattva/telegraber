@@ -7,10 +7,8 @@ import it.tdlight.client.Client;
 import it.tdlight.jni.TdApi;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Helper {
 
@@ -34,7 +32,9 @@ public class Helper {
         Client.getClient().send(new TdApi.GetBasicGroup(groupId), new ResultChatHandler());
     }
 
-
+    public static<K, V> K getKeyByValue(Map<K, V> map, V value) {
+        return (K) map.entrySet().stream().filter(x -> x.getValue() == value).collect(Collectors.toList()).get(0);
+    }
 
 
 

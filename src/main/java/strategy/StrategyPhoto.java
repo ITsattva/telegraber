@@ -14,7 +14,6 @@ public class StrategyPhoto implements Strategy{
 
 	@Override
 	public void send(long chatId, UpdateNewMessage update) {
-		System.out.println("Strategy photo started");
 		var content = (TdApi.MessagePhoto) update.message.content;
 		FormattedText text = content.caption;
 		int photoId = 0;
@@ -75,9 +74,18 @@ public class StrategyPhoto implements Strategy{
 	}
 
 	@Override
-	public String getUniqueNumber(UpdateNewMessage content) throws IOException {
-		TdApi.File file = getContentFile(content);
-		return file.remote.uniqueId;
+	public String getUniqueNumber(UpdateNewMessage update) throws IOException {
+		var content = (TdApi.MessagePhoto) update.message.content;
+		int width = 0;
+		int height = 0;
+		TdApi.File file = null;
+		for (var photo : content.photo.sizes) {
+			width = photo.width;
+			height = photo.height;
+			file = photo.photo;
+		}
+		String uniqueId = file.size + "" + width + "" +height;
+		return uniqueId;
 	}
 
 	@Override

@@ -41,5 +41,26 @@ public class StrategyDocument implements Strategy{
 		return new TdApi.InputMessageDocument(new TdApi.InputFileId(documentId), null, true, text);
 	}
 
+	@Override
+	public TdApi.File getContentFile(TdApi.UpdateNewMessage content) throws IOException {
+		var document = (TdApi.MessageDocument) content.message.content;
+		TdApi.File file = document.document.document;
+		return file;
+	}
+
+	@Override
+	public String getUniqueNumber(UpdateNewMessage content) throws IOException {
+		TdApi.File file = getContentFile(content);
+
+		return String.valueOf(file.size);
+	}
+
+	@Override
+	public String getTextOfContent(UpdateNewMessage content) throws IOException {
+		var document = (TdApi.MessageDocument) content.message.content;
+		String text = document.caption.text;
+		return text;
+	}
+
 
 }

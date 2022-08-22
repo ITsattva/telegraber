@@ -28,7 +28,6 @@ public class StrategyAudio implements Strategy{
 	}
 
 	public void sendBatch(long chatId, ArrayList<TdApi.UpdateNewMessage> arrayContent) {
-		System.out.println("TRYING TO SEND BATCH OF AUDIO");
 		TdApi.InputMessageContent[] messageContents = new TdApi.InputMessageContent[arrayContent.size()];
 		for (int i = 0; i < arrayContent.size(); i++) {
 			var content = (MessageAudio) arrayContent.get(i).message.content;
@@ -40,7 +39,7 @@ public class StrategyAudio implements Strategy{
 
 			messageContents[i] = new TdApi.InputMessageAudio(new InputFileId(id), null, duration, title, performer, text);
 		}
-		System.out.println("PARSING WAS COMPLETED");
+
 		client.send(new TdApi.SendMessageAlbum(chatId, 0, 0, null, messageContents, false), new ResultHandler());
 	}
 
@@ -54,5 +53,28 @@ public class StrategyAudio implements Strategy{
 		String performer = content.audio.performer;
 
 		return new TdApi.InputMessageAudio(new InputFileId(id), null, duration, title, performer, text);
+	}
+
+	@Override
+	public File getContentFile(UpdateNewMessage content) throws IOException {
+		var audio = (MessageAudio) content.message.content;
+		TdApi.File file = audio.audio.audio;
+
+		return file;
+	}
+
+	@Override
+	public String getUniqueNumber(UpdateNewMessage content) throws IOException {
+		TdApi.File file = getContentFile(content);
+
+		return String.valueOf(file.size);
+	}
+
+	@Override
+	public String getTextOfContent(UpdateNewMessage content) throws IOException {
+		var audio = (TdApi.MessageAudio) content.message.content;
+		String text = audio.caption.text;
+
+		return text;
 	}
 }

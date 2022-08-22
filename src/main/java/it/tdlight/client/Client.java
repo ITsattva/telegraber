@@ -147,6 +147,8 @@ public final class Client {
                 System.out.println("IOException in Programming channels occurred");
                 try {
                     sender.sendExceptionToAuthor(e, "Programming channel: " + fromChatId);
+                    bufferListTEST.clear();
+
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -174,6 +176,8 @@ public final class Client {
                 System.out.println("IOException in WAR channels occurred");
                 try {
                     sender.sendExceptionToAuthor(e, "war channels " + fromChatId);
+                    bufferListTEST.clear();
+
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -183,8 +187,11 @@ public final class Client {
         /////////DEBUG AREA////////////////
         /////////Testing batch sending/////
 //        if (testChannelForDebuggingFROM.containsValue(fromChatId)) {
+//            System.out.println("-------------- BUFFER LIST START --------------");
+//            bufferListTEST.stream().forEach(x -> System.out.println("there is something in the buffer"));
+//            System.out.println("-------------- BUFFER LIST END --------------");
+//
 //            try {
-//                System.out.println("There is a message, with albumId: " + update.message.mediaAlbumId);
 //                if (update.message.mediaAlbumId == 0) {
 //                    if(bufferListTEST.size() > 0) {
 //                        sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
@@ -203,7 +210,8 @@ public final class Client {
 //                    lastMessageAlbumId = update.message.mediaAlbumId;
 //                }
 //            } catch (Exception e) {
-//                System.out.println("IOException in test channel occurred");
+//                System.out.println(e);
+//                bufferListTEST.clear();
 //            }
 //        }
         /////////DEBUG AREA////////////////

@@ -25,4 +25,21 @@ public class StrategyText implements Strategy{
 	public TdApi.InputMessageContent getInputMessageContent(TdApi.UpdateNewMessage message) throws IOException {
 		return null;
 	}
+
+	@Override
+	public TdApi.File getContentFile(TdApi.UpdateNewMessage content) throws IOException {
+		return null;
+	}
+
+	@Override
+	public String getUniqueNumber(UpdateNewMessage content) {
+		return null;
+	}
+
+	@Override
+	public String getTextOfContent(UpdateNewMessage content) throws IOException {
+		var text = (TdApi.MessageText) content.message.content;
+
+		return text.text.text;
+	}
 }

@@ -23,7 +23,6 @@ public class StrategyVideo implements Strategy{
 	}
 
 	public void sendBatch(long chatId, ArrayList<TdApi.UpdateNewMessage> arrayContent) {
-		System.out.println("TRYING TO SEND BATCH OF VIDEO");
 		TdApi.InputMessageContent[] messageContents = new TdApi.InputMessageContent[arrayContent.size()];
 		for (int i = 0; i < arrayContent.size(); i++) {
 			var content = (TdApi.MessageVideo) arrayContent.get(i).message.content;
@@ -35,7 +34,6 @@ public class StrategyVideo implements Strategy{
 			
 			messageContents[i] = new TdApi.InputMessageVideo(new TdApi.InputFileId(videoId), null, null, duration, width, height, false, text, 0);
 		}
-		System.out.println("PARSING WAS COMPLETED");
 		client.send(new TdApi.SendMessageAlbum(chatId, 0, 0, null, messageContents, false), new ResultHandler());
 	}
 
@@ -49,5 +47,26 @@ public class StrategyVideo implements Strategy{
 		int duration = content.video.duration;
 
 		return new TdApi.InputMessageVideo(new TdApi.InputFileId(videoId), null, null, duration, width, height, false, text, 0);
+	}
+
+	@Override
+	public TdApi.File getContentFile(TdApi.UpdateNewMessage content) throws IOException {
+		var video = (TdApi.MessageVideo) content.message.content;
+		TdApi.File file = video.video.video;
+		return file;
+	}
+
+	@Override
+	public String getUniqueNumber(UpdateNewMessage content) throws IOException {
+		TdApi.File file = getContentFile(content);
+
+		return String.valueOf(file.size);
+	}
+
+	@Override
+	public String getTextOfContent(UpdateNewMessage content) throws IOException {
+		var video = (TdApi.MessageVideo) content.message.content;
+		String text = video.caption.text;
+		return text;
 	}
 }

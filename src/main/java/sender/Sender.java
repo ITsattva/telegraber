@@ -55,6 +55,8 @@ public class Sender {
             setStrategy(new StrategyDocument());
         } else if (content instanceof TdApi.MessageAnimation) {
             setStrategy(new StrategyAnimation());
+        } else if (content instanceof TdApi.MessagePoll) {
+            setStrategy(new StrategyPoll());
         }
     }
 
@@ -181,7 +183,7 @@ public class Sender {
 
         long debugChatId = -1001611624929L;
         LocalDateTime time = LocalDateTime.now().plusHours(3);
-        String timeFormatted = time.getHour() + ":" + time.getMinute() + ":" + time.getSecond() + ": ";
+        String timeFormatted = "error: " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond() + ": ";
 
         TdApi.FormattedText text = new TdApi.FormattedText(timeFormatted + from + "\n" + exception.getMessage(), null);
         Client.getClient().send(new TdApi.SendMessage(debugChatId, 0, 0, null, null, new TdApi.InputMessageText(text, true, true)), new ResultHandler());

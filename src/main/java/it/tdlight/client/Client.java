@@ -129,104 +129,104 @@ public final class Client {
         long fromChatId = update.message.chatId;
 
         log.trace("Handling paths of the posts");
-//        if (channelsFromProgramming.containsValue(fromChatId)) {
-//            try {
-//                if (update.message.mediaAlbumId == 0) {
-//                    if(bufferListProgramming.size() > 0) {
-//                        sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
-//                    }
-//                    bufferListProgramming.clear();
-//                    sender.send(channelsTo.get("Programming test"), update);
-//                } else if (bufferListProgramming.isEmpty() || lastMessageAlbumIdProgramming == update.message.mediaAlbumId) {
-//                    bufferListProgramming.add(update);
-//                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
-//                } else {
-//                    sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
-//                    bufferListProgramming.clear();
-//                    bufferListProgramming.add(update);
-//                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
-//                }
-//            } catch (Exception e) {
-//                System.out.println("IOException in Programming channels occurred");
-//                try {
-//                    sender.sendExceptionToAuthor(e, "Programming channel: " + " id:" + fromChatId);
-//                    bufferListTEST.clear();
-//                } catch (IOException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//            }
-//        }
-//
-//        if(channelsFromWar.containsValue(fromChatId)) {
-//            try {
-//                if (update.message.mediaAlbumId == 0) {
-//                    if(bufferListWar.size() > 0) {
-//                        sender.sendBatch(channelsTo.get("War test"), bufferListWar);
-//                    }
-//                    bufferListWar.clear();
-//                    sender.send(channelsTo.get("War test"), update);
-//                } else if (bufferListWar.isEmpty() || lastMessageAlbumIdWar == update.message.mediaAlbumId) {
-//                    bufferListWar.add(update);
-//                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
-//                } else {
-//                    sender.sendBatch(channelsTo.get("War test"), bufferListWar);
-//                    bufferListWar.clear();
-//                    bufferListWar.add(update);
-//                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
-//                }
-//            } catch (Exception e) {
-//                System.out.println("IOException in WAR channels occurred");
-//                try {
-//                    sender.sendExceptionToAuthor(e, "war channels "  + " id:" + fromChatId);
-//                    bufferListTEST.clear();
-//                } catch (IOException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//            }
-//        }
+        if (channelsFromProgramming.containsValue(fromChatId)) {
+            try {
+                if (update.message.mediaAlbumId == 0) {
+                    if(bufferListProgramming.size() > 0) {
+                        sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
+                    }
+                    bufferListProgramming.clear();
+                    sender.send(channelsTo.get("Programming test"), update);
+                } else if (bufferListProgramming.isEmpty() || lastMessageAlbumIdProgramming == update.message.mediaAlbumId) {
+                    bufferListProgramming.add(update);
+                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
+                } else {
+                    sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
+                    bufferListProgramming.clear();
+                    bufferListProgramming.add(update);
+                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
+                }
+            } catch (Exception e) {
+                System.out.println("IOException in Programming channels occurred");
+                try {
+                    sender.sendExceptionToAuthor(e, "Programming channel: " + " id:" + fromChatId);
+                    bufferListTEST.clear();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+
+        if(channelsFromWar.containsValue(fromChatId)) {
+            try {
+                if (update.message.mediaAlbumId == 0) {
+                    if(bufferListWar.size() > 0) {
+                        sender.sendBatch(channelsTo.get("War test"), bufferListWar);
+                    }
+                    bufferListWar.clear();
+                    sender.send(channelsTo.get("War test"), update);
+                } else if (bufferListWar.isEmpty() || lastMessageAlbumIdWar == update.message.mediaAlbumId) {
+                    bufferListWar.add(update);
+                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
+                } else {
+                    sender.sendBatch(channelsTo.get("War test"), bufferListWar);
+                    bufferListWar.clear();
+                    bufferListWar.add(update);
+                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
+                }
+            } catch (Exception e) {
+                System.out.println("IOException in WAR channels occurred");
+                try {
+                    sender.sendExceptionToAuthor(e, "war channels "  + " id:" + fromChatId);
+                    bufferListTEST.clear();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
 
         /////////DEBUG AREA////////////////
         /////////Testing batch sending/////
-        if (testChannelForDebuggingFROM.containsValue(fromChatId)) {
-            bufferListTEST.forEach(x -> System.out.println("there is something has been put into the buffer"));
-            try {
-                if (update.message.mediaAlbumId == 0) {
-                    if(bufferListTEST.size() > 0) {
-                        sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
-                    }
-                    bufferListTEST.clear();
-                    sender.send(testChannelForDebuggingTO.get("Test"), update);
-                } else if (bufferListTEST.isEmpty() || lastMessageAlbumId == update.message.mediaAlbumId) {
-                    bufferListTEST.add(update);
-                    lastMessageAlbumId = update.message.mediaAlbumId;
-                } else {
-                    sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
-                    bufferListTEST.clear();
-                    bufferListTEST.add(update);
-                    lastMessageAlbumId = update.message.mediaAlbumId;
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-                bufferListTEST.clear();
-            }
-        }
+//        if (testChannelForDebuggingFROM.containsValue(fromChatId)) {
+//            bufferListTEST.forEach(x -> System.out.println("there is something has been put into the buffer"));
+//            try {
+//                if (update.message.mediaAlbumId == 0) {
+//                    if(bufferListTEST.size() > 0) {
+//                        sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
+//                    }
+//                    bufferListTEST.clear();
+//                    sender.send(testChannelForDebuggingTO.get("Test"), update);
+//                } else if (bufferListTEST.isEmpty() || lastMessageAlbumId == update.message.mediaAlbumId) {
+//                    bufferListTEST.add(update);
+//                    lastMessageAlbumId = update.message.mediaAlbumId;
+//                } else {
+//                    sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
+//                    bufferListTEST.clear();
+//                    bufferListTEST.add(update);
+//                    lastMessageAlbumId = update.message.mediaAlbumId;
+//                }
+//            } catch (Exception e) {
+//                System.out.println(e);
+//                bufferListTEST.clear();
+//            }
+//        }
 
         /////////DEBUG AREA////////////////
 
         /**
          * Logger command handler
          **/
-//        if (testChannelForDebuggingTO.containsValue(fromChatId)) {
-//            log.info("Requesting logs");
-//            if(update.message.content instanceof TdApi.MessageDocument) {
-//                log.info("Log was successfully sent");
-//            } else {
-//                TdApi.MessageText text = (TdApi.MessageText) update.message.content;
-//                String command = text.text.text;
-//
-//                LoggerHandler.sendLogs(testChannelForDebuggingTO.get("Test"), command);
-//            }
-//        }
+        if (testChannelForDebuggingTO.containsValue(fromChatId)) {
+            log.info("Requesting logs");
+            if(update.message.content instanceof TdApi.MessageDocument) {
+                log.info("Log was successfully sent");
+            } else {
+                TdApi.MessageText text = (TdApi.MessageText) update.message.content;
+                String command = text.text.text;
+
+                LoggerHandler.sendLogs(testChannelForDebuggingTO.get("Test"), command);
+            }
+        }
 
 
         // Get the message text

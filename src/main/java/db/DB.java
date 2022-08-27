@@ -1,8 +1,7 @@
 package db;
 
-public interface DB {
-
-    void putIntoDB(String content);
-    boolean checkRepetition(String content);
+public interface DB<T> {
+    void putIntoDB(T content);
+    boolean checkRepetition(T content);
 
 }

@@ -1,0 +1,29 @@
+2022-08-26 20:15:13 ERROR Client - error logging testing
+2022-08-26 20:23:13 ERROR Client - error logging testing
+2022-08-26 20:35:23 ERROR Client - error logging testing
+2022-08-26 20:35:29 ERROR Client - error logging testing
+2022-08-26 20:40:08 ERROR Client - error logging testing
+2022-08-26 20:47:01 ERROR Client - error logging testing
+2022-08-26 21:05:06 ERROR Client - error logging testing
+2022-08-26 21:08:04 ERROR Client - error logging testing
+2022-08-26 21:09:41 ERROR Client - error logging testing
+2022-08-26 21:11:04 ERROR Client - error logging testing
+2022-08-26 21:13:32 ERROR Client - error logging testing
+2022-08-27 19:35:44 ERROR Client - error logging testing
+2022-08-27 19:38:37 ERROR Client - error logging testing
+2022-08-27 19:39:38 ERROR Client - error logging testing
+2022-08-27 19:42:18 ERROR TemporaryTextDB - Text doesn't pass repetition
+2022-08-27 19:42:18 ERROR Sender - ContentAlreadyExistsException
+2022-08-27 19:42:23 ERROR TemporaryTextDB - Text doesn't pass repetition
+2022-08-27 19:43:24 ERROR ResultHandlerForBatch - checkRepetition didn't pass
+2022-08-27 19:43:24 ERROR TemporaryImageHashDB - Hash is already in the DB
+2022-08-27 19:43:24 ERROR TemporaryTextDB - Text doesn't pass repetition
+2022-08-27 19:44:40 ERROR ResultHandlerForBatch - checkRepetition didn't pass
+2022-08-27 19:44:40 ERROR TemporaryImageHashDB - Hash is already in the DB
+2022-08-27 19:44:40 ERROR TemporaryTextDB - Text doesn't pass repetition
+2022-08-27 19:57:53 ERROR TemporaryImageHashDB - Hash is already in the DB
+2022-08-27 19:57:53 ERROR ResultImageHashHandler - checkRepetition didn't pass
+2022-08-27 20:00:01 ERROR ResultHandlerForBatch - checkRepetition didn't pass
+2022-08-27 20:00:01 ERROR TemporaryImageHashDB - Hash is already in the DB
+2022-08-27 20:00:01 ERROR TemporaryTextDB - Text doesn't pass repetition
+2022-08-27 20:36:41 ERROR ResultHandlerForBatch - Batch checking hasn't passed

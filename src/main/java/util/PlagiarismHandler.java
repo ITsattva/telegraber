@@ -1,6 +1,8 @@
 package util;
 
 import it.tdlight.jni.TdApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import strategy.*;
 
 import java.io.IOException;
@@ -10,9 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PlagiarismHandler {
+    public static final Logger log = LoggerFactory.getLogger(PlagiarismHandler.class);
     private Strategy strategy;
 
     public void tuneUpStrategy(TdApi.MessageContent content) {
+        log.info("Tuning up a strategy");
         if (content instanceof TdApi.MessageText) {
             setStrategy(new StrategyText());
         } else if (content instanceof TdApi.MessageAudio) {
@@ -29,10 +33,12 @@ public class PlagiarismHandler {
     }
 
     public void setStrategy(Strategy strategy) {
+        log.info("Setup the strategy");
         this.strategy = strategy;
     }
 
     public static boolean isTextAlreadyInTheChannel(String one, String two, double powerOfChange) {
+        log.info("Check: is text already in the channel?");
         if(one == null || two == null) {
             return false;
         }
@@ -62,14 +68,24 @@ public class PlagiarismHandler {
     }
 
     public String hashMaker(TdApi.UpdateNewMessage content) throws IOException {
+        log.info("Generating unique id for media(not pictures)");
         return strategy.getUniqueNumber(content);
     }
 
     public String textTaker(TdApi.UpdateNewMessage content) throws IOException {
+        log.info("Text extraction from the post");
         return strategy.getTextOfContent(content);
     }
 
     public boolean isText(){
-        return strategy.getClass().getSimpleName().equals(StrategyText.class.getSimpleName());
+        boolean isText = strategy.getClass().getSimpleName().equals(StrategyText.class.getSimpleName());
+        log.info("Is it text? : " + isText);
+        return isText;
+    }
+
+    public boolean isPicture(){
+        boolean isPicture = strategy.getClass().getSimpleName().equals(StrategyPhoto.class.getSimpleName());
+        log.info("Is it picture? : " + isPicture);
+        return isPicture;
     }
 }

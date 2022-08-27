@@ -1,11 +1,10 @@
 package it.tdlight.client;
 
+import debug.LoggerHandler;
 import it.tdlight.common.Init;
 import it.tdlight.common.utils.CantLoadLibrary;
 import it.tdlight.jni.TdApi;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -14,8 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import strategy.Sender;
-import util.Helper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sender.Sender;
 
 /**
  * Example class for TDLight Java
@@ -23,6 +23,8 @@ import util.Helper;
  * The documentation of the TDLight functions can be found here: https://tdlight-team.github.io/tdlight-docs
  */
 public final class Client {
+
+    public static final Logger log = LoggerFactory.getLogger(Client.class);
 
     /**
      * Admin user id, used by the stop command example
@@ -56,6 +58,8 @@ public final class Client {
     //test area
 
     static {
+        log.info("Loading static data...");
+
         try {
             properties.load(new FileReader("telegram.properties"));
         } catch (IOException e) {
@@ -81,145 +85,148 @@ public final class Client {
 
     public static void main(String[] args) throws CantLoadLibrary, InterruptedException {
 
-        // Initialize TDLight native libraries
+        log.info("Start initialization");
         Init.start();
 
-        // Obtain the API token
+        log.info("Obtain the API token");
         var apiToken = new APIToken(Integer.parseInt(properties.getProperty("apiID")), properties.getProperty("apiHash"));
 
-        // Configure the client
+        log.info("Configure the client");
         var settings = TDLibSettings.create(apiToken);
 
-        // Configure the session directory
+        log.info("Configure the session directory");
         var sessionPath = Paths.get("current-session");
         settings.setDatabaseDirectoryPath(sessionPath.resolve("data"));
         settings.setDownloadedFilesDirectoryPath(sessionPath.resolve("downloads"));
 
-        // Create a client
+        log.info("Create a client");
         client = new SimpleTelegramClient(settings);
 
-        // Configure the authentication info
+        log.info("Configure the authentication info");
         var authenticationData = AuthenticationData.consoleLogin();
 
+        log.info("Adding example handlers");
         // Add an example update handler that prints when the bot is started
         client.addUpdateHandler(TdApi.UpdateAuthorizationState.class, Client::onUpdateAuthorizationState);
-
         // Add an example update handler that prints every received message
         client.addUpdateHandler(TdApi.UpdateNewMessage.class, Client::onUpdateNewMessage);
-
         // Add an example command handler that stops the bot
         client.addCommandHandler("stop", new StopCommandHandler());
 
-        // Start the client
+        log.info("Client has been started");
         client.start(authenticationData);
 
-        // Wait for exit
+        log.info("Waiting for exit");
         client.waitForExit();
     }
 
     /**
      * Print new messages received via updateNewMessage
      */
-    private static void onUpdateNewMessage(TdApi.UpdateNewMessage update) {
-        // Get the message content
+    private static void onUpdateNewMessage(TdApi.UpdateNewMessage update)  {
+        log.trace("Get the message content");
         var messageContent = update.message.content;
         long fromChatId = update.message.chatId;
 
-        //Main Logic
-        //todo need to handle situation with multiply types of media
-        if (channelsFromProgramming.containsValue(fromChatId)) {
-            try {
-                if (update.message.mediaAlbumId == 0) {
-                    if(bufferListProgramming.size() > 0) {
-                        sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
-                    }
-                    bufferListProgramming.clear();
-                    sender.send(channelsTo.get("Programming test"), update);
-                } else if (bufferListProgramming.isEmpty() || lastMessageAlbumIdProgramming == update.message.mediaAlbumId) {
-                    bufferListProgramming.add(update);
-                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
-                } else {
-                    sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
-                    bufferListProgramming.clear();
-                    bufferListProgramming.add(update);
-                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
-                }
-            } catch (Exception e) {
-                System.out.println("IOException in Programming channels occurred");
-                try {
-                    sender.sendExceptionToAuthor(e, "Programming channel: " +
-                            Helper.getKeyByValue(channelsFromProgramming, fromChatId) +
-                            " id:" + fromChatId);
-                    bufferListTEST.clear();
-
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
-
-        if(channelsFromWar.containsValue(fromChatId)) {
-            try {
-                if (update.message.mediaAlbumId == 0) {
-                    if(bufferListWar.size() > 0) {
-                        sender.sendBatch(channelsTo.get("War test"), bufferListWar);
-                    }
-                    bufferListWar.clear();
-                    sender.send(channelsTo.get("War test"), update);
-                } else if (bufferListWar.isEmpty() || lastMessageAlbumIdWar == update.message.mediaAlbumId) {
-                    bufferListWar.add(update);
-                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
-                } else {
-                    sender.sendBatch(channelsTo.get("War test"), bufferListWar);
-                    bufferListWar.clear();
-                    bufferListWar.add(update);
-                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
-                }
-            } catch (Exception e) {
-                System.out.println("IOException in WAR channels occurred");
-                try {
-                    sender.sendExceptionToAuthor(e, "war channels "  +
-                            Helper.getKeyByValue(channelsFromWar, fromChatId) +
-                            " id:" + fromChatId);
-                    bufferListTEST.clear();
-
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
+        log.trace("Handling paths of the posts");
+//        if (channelsFromProgramming.containsValue(fromChatId)) {
+//            try {
+//                if (update.message.mediaAlbumId == 0) {
+//                    if(bufferListProgramming.size() > 0) {
+//                        sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
+//                    }
+//                    bufferListProgramming.clear();
+//                    sender.send(channelsTo.get("Programming test"), update);
+//                } else if (bufferListProgramming.isEmpty() || lastMessageAlbumIdProgramming == update.message.mediaAlbumId) {
+//                    bufferListProgramming.add(update);
+//                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
+//                } else {
+//                    sender.sendBatch(channelsTo.get("Programming test"), bufferListProgramming);
+//                    bufferListProgramming.clear();
+//                    bufferListProgramming.add(update);
+//                    lastMessageAlbumIdProgramming = update.message.mediaAlbumId;
+//                }
+//            } catch (Exception e) {
+//                System.out.println("IOException in Programming channels occurred");
+//                try {
+//                    sender.sendExceptionToAuthor(e, "Programming channel: " + " id:" + fromChatId);
+//                    bufferListTEST.clear();
+//                } catch (IOException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            }
+//        }
+//
+//        if(channelsFromWar.containsValue(fromChatId)) {
+//            try {
+//                if (update.message.mediaAlbumId == 0) {
+//                    if(bufferListWar.size() > 0) {
+//                        sender.sendBatch(channelsTo.get("War test"), bufferListWar);
+//                    }
+//                    bufferListWar.clear();
+//                    sender.send(channelsTo.get("War test"), update);
+//                } else if (bufferListWar.isEmpty() || lastMessageAlbumIdWar == update.message.mediaAlbumId) {
+//                    bufferListWar.add(update);
+//                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
+//                } else {
+//                    sender.sendBatch(channelsTo.get("War test"), bufferListWar);
+//                    bufferListWar.clear();
+//                    bufferListWar.add(update);
+//                    lastMessageAlbumIdWar = update.message.mediaAlbumId;
+//                }
+//            } catch (Exception e) {
+//                System.out.println("IOException in WAR channels occurred");
+//                try {
+//                    sender.sendExceptionToAuthor(e, "war channels "  + " id:" + fromChatId);
+//                    bufferListTEST.clear();
+//                } catch (IOException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            }
+//        }
 
         /////////DEBUG AREA////////////////
         /////////Testing batch sending/////
-//        if (testChannelForDebuggingFROM.containsValue(fromChatId)) {
-//            System.out.println("-------------- BUFFER LIST START --------------");
-//            bufferListTEST.stream().forEach(x -> System.out.println("there is something in the buffer"));
-//            System.out.println("-------------- BUFFER LIST END --------------");
+        if (testChannelForDebuggingFROM.containsValue(fromChatId)) {
+            bufferListTEST.forEach(x -> System.out.println("there is something has been put into the buffer"));
+            try {
+                if (update.message.mediaAlbumId == 0) {
+                    if(bufferListTEST.size() > 0) {
+                        sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
+                    }
+                    bufferListTEST.clear();
+                    sender.send(testChannelForDebuggingTO.get("Test"), update);
+                } else if (bufferListTEST.isEmpty() || lastMessageAlbumId == update.message.mediaAlbumId) {
+                    bufferListTEST.add(update);
+                    lastMessageAlbumId = update.message.mediaAlbumId;
+                } else {
+                    sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
+                    bufferListTEST.clear();
+                    bufferListTEST.add(update);
+                    lastMessageAlbumId = update.message.mediaAlbumId;
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+                bufferListTEST.clear();
+            }
+        }
+
+        /////////DEBUG AREA////////////////
+
+        /**
+         * Logger command handler
+         **/
+//        if (testChannelForDebuggingTO.containsValue(fromChatId)) {
+//            log.info("Requesting logs");
+//            if(update.message.content instanceof TdApi.MessageDocument) {
+//                log.info("Log was successfully sent");
+//            } else {
+//                TdApi.MessageText text = (TdApi.MessageText) update.message.content;
+//                String command = text.text.text;
 //
-//            try {
-//                if (update.message.mediaAlbumId == 0) {
-//                    if(bufferListTEST.size() > 0) {
-//                        sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
-//                    }
-//                    bufferListTEST.clear();
-//                    sender.send(testChannelForDebuggingTO.get("Test"), update);
-//                    //Если пришло пачкой, то накапливаем до тех пор, пока одинаковый альбом_айди
-//                } else if (bufferListTEST.isEmpty() || lastMessageAlbumId == update.message.mediaAlbumId) {
-//                    bufferListTEST.add(update);
-//                    lastMessageAlbumId = update.message.mediaAlbumId;
-//                    //Айди разный - отправляем
-//                } else {
-//                    sender.sendBatch(testChannelForDebuggingTO.get("Test"), bufferListTEST);
-//                    bufferListTEST.clear();
-//                    bufferListTEST.add(update);
-//                    lastMessageAlbumId = update.message.mediaAlbumId;
-//                }
-//            } catch (Exception e) {
-//                System.out.println(e);
-//                bufferListTEST.clear();
+//                LoggerHandler.sendLogs(testChannelForDebuggingTO.get("Test"), command);
 //            }
 //        }
-        /////////DEBUG AREA////////////////
 
 
         // Get the message text
@@ -240,7 +247,7 @@ public final class Client {
             var chatName = chat.title;
 
             // Print the message
-            System.out.printf("Received new message from chat %s: %s%n", chatName, text);
+            //System.out.printf("Received new message from chat %s: %s%n", chatName, text);
         });
     }
 
@@ -255,6 +262,7 @@ public final class Client {
             // Check if the sender is the admin
             if (isAdmin(commandSender)) {
                 // Stop the client
+                log.info("Received stop command. closing...");
                 System.out.println("Received stop command. closing...");
                 client.sendClose();
             }
@@ -267,12 +275,16 @@ public final class Client {
     private static void onUpdateAuthorizationState(TdApi.UpdateAuthorizationState update) {
         var authorizationState = update.authorizationState;
         if (authorizationState instanceof TdApi.AuthorizationStateReady) {
+            log.info("Logged in");
             System.out.println("Logged in");
         } else if (authorizationState instanceof TdApi.AuthorizationStateClosing) {
+            log.info("Closing...");
             System.out.println("Closing...");
         } else if (authorizationState instanceof TdApi.AuthorizationStateClosed) {
+            log.info("Closed");
             System.out.println("Closed");
         } else if (authorizationState instanceof TdApi.AuthorizationStateLoggingOut) {
+            log.info("Logging out...");
             System.out.println("Logging out...");
         }
     }

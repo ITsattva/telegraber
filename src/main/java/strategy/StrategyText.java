@@ -18,6 +18,7 @@ public class StrategyText implements Strategy{
 	public void send(long chatId, UpdateNewMessage update) {
 		log.info("Sending a text content");
 		FormattedText text = ((MessageText) update.message.content).text;
+
 		client.send(new TdApi.SendMessage(chatId, 0, 0, null, null, new TdApi.InputMessageText(text, false, true)), new ResultHandler());
 	}
 

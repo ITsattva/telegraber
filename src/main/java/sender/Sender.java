@@ -1,7 +1,6 @@
 package sender;
 
 import db.MainDB;
-import handler.DeleteFileHandler;
 import handler.ResultHandlerForBatch;
 import handler.ResultHandler;
 import handler.DownloadResultHandler;
@@ -15,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import strategy.*;
 import util.CashCleaner;
-import util.ContentAlreadyExistsException;
+import exception.ContentAlreadyExistsException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

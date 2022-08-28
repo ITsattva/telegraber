@@ -4,7 +4,7 @@ import dev.brachtendorf.jimagehash.hash.Hash;
 import it.tdlight.jni.TdApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.ContentAlreadyExistsException;
+import exception.ContentAlreadyExistsException;
 import util.PlagiarismHandler;
 
 import java.io.IOException;

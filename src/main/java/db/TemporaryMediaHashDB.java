@@ -1,9 +1,7 @@
 package db;
 
-import it.tdlight.jni.TdApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.ContentAlreadyExistsException;
 
 import java.util.HashSet;
 import java.util.Set;

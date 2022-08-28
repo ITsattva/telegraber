@@ -47,3 +47,4 @@ Caused by: javax.imageio.IIOException: Can't read input file!
 	at handler.DownloadResultHandler.onResult(DownloadResultHandler.java:25)
 	... 8 more
 2022-08-28 13:23:33 ERROR ResultHandlerForBatch - Batch checking hasn't passed
+2022-08-28 14:51:55 ERROR TemporaryTextDB - Text doesn't pass repetition

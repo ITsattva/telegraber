@@ -1,9 +1,10 @@
 package sender;
 
 import db.MainDB;
+import handler.DeleteFileHandler;
 import handler.ResultHandlerForBatch;
 import handler.ResultHandler;
-import handler.ResultImageHashHandler;
+import handler.DownloadResultHandler;
 import it.tdlight.client.Client;
 import it.tdlight.jni.TdApi;
 import it.tdlight.jni.TdApi.MessageAudio;
@@ -13,6 +14,7 @@ import it.tdlight.jni.TdApi.MessageVideo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import strategy.*;
+import util.CashCleaner;
 import util.ContentAlreadyExistsException;
 
 import java.io.IOException;
@@ -108,7 +110,6 @@ public class Sender {
     private void handlePicture(long chatId, TdApi.UpdateNewMessage update) throws IOException {
         log.info("handling picture method");
         var content = (TdApi.MessagePhoto) update.message.content;
-        TdApi.FormattedText text = content.caption;
         if(!tempDB.checkContent(update)){
             log.error(ContentAlreadyExistsException.class.getSimpleName());
             throw new ContentAlreadyExistsException("Text already in the channel");
@@ -120,8 +121,7 @@ public class Sender {
 
         Sender.chatId = chatId;
         temp = update;
-
-        Client.getClient().send(new TdApi.DownloadFile(photoId, 32, 0, 0, true), new ResultImageHashHandler());
+        Client.getClient().send(new TdApi.DownloadFile(photoId, 32, 0, 0, true), new DownloadResultHandler());
     }
 
     private void handlePictures(long chatId, ArrayList<TdApi.UpdateNewMessage> update) throws IOException {
@@ -159,6 +159,7 @@ public class Sender {
         tuneUpStrategy(temp.message.content);
 
         strategy.send(chatId, temp);
+        CashCleaner.cleanPhotosCash();
         temp = null;
     }
 

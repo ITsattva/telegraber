@@ -27,3 +27,23 @@
 2022-08-27 20:00:01 ERROR TemporaryImageHashDB - Hash is already in the DB
 2022-08-27 20:00:01 ERROR TemporaryTextDB - Text doesn't pass repetition
 2022-08-27 20:36:41 ERROR ResultHandlerForBatch - Batch checking hasn't passed
+2022-08-28 13:21:27 ERROR DownloadResultHandler - IOException has been occurred!
+Can't read input file!
+2022-08-28 13:21:27 ERROR SimpleTelegramClient - Failed to handle the request result
+java.lang.RuntimeException: javax.imageio.IIOException: Can't read input file!
+	at handler.DownloadResultHandler.onResult(DownloadResultHandler.java:36)
+	at it.tdlight.client.SimpleTelegramClient.lambda$send$4(SimpleTelegramClient.java:227)
+	at it.tdlight.common.internal.InternalClient.handleResponse(InternalClient.java:101)
+	at it.tdlight.common.internal.InternalClient.handleEvent(InternalClient.java:119)
+	at it.tdlight.common.internal.InternalClient.handleEvents(InternalClient.java:71)
+	at it.tdlight.common.internal.InternalClientManager.handleClientEvents(InternalClientManager.java:74)
+	at it.tdlight.common.internal.ResponseReceiver.runInternal(ResponseReceiver.java:125)
+	at it.tdlight.common.internal.ResponseReceiver.run(ResponseReceiver.java:71)
+	at it.tdlight.common.internal.NativeResponseReceiver.run(NativeResponseReceiver.java:6)
+Caused by: javax.imageio.IIOException: Can't read input file!
+	at java.desktop/javax.imageio.ImageIO.read(ImageIO.java:1310)
+	at dev.brachtendorf.jimagehash.hashAlgorithms.HashingAlgorithm.hash(HashingAlgorithm.java:272)
+	at util.ImageHashHandler.getImageHash(ImageHashHandler.java:29)
+	at handler.DownloadResultHandler.onResult(DownloadResultHandler.java:25)
+	... 8 more
+2022-08-28 13:23:33 ERROR ResultHandlerForBatch - Batch checking hasn't passed

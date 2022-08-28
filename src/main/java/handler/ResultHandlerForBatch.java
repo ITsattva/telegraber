@@ -8,6 +8,7 @@ import it.tdlight.jni.TdApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sender.Sender;
+import util.CashCleaner;
 import util.ImageHashHandler;
 
 import java.io.IOException;
@@ -23,7 +24,6 @@ public class ResultHandlerForBatch implements GenericResultHandler<TdApi.File> {
     @Override
     public void onResult(Result<TdApi.File> result) {
         Sender.plusOneDownload();
-
         log.info("HandlerForBatch on Result method has been launched");
         try {
             TdApi.File file = result.get();
@@ -37,9 +37,11 @@ public class ResultHandlerForBatch implements GenericResultHandler<TdApi.File> {
                     if(Sender.readyForPush()){
                         log.info("Trying to send a batch");
                         sender.sendBatch(Sender.getChatId(), Sender.getTempList());
+                        CashCleaner.cleanPhotosCash();
                         Sender.restartCounters();
                     }
                 } else {
+                    CashCleaner.cleanPhotosCash();
                     log.error("Batch checking hasn't passed");
                 }
             } else {

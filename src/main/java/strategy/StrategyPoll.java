@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class StrategyPoll implements Strategy{
+public class StrategyPoll implements Strategy{//todo need to make preview for links (from habr for example)
     public static final Logger log = LoggerFactory.getLogger(StrategyPoll.class);
 
     @Override
